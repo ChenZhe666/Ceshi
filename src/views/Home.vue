@@ -59,7 +59,16 @@
             </el-dropdown>
           </div>
           <div class="tags-view-container">
-            <ul>
+            <el-tag
+              v-for="tag in tags"
+              :key="tag.name"
+              class="mx-1"
+              closable
+              :type="tag.type"
+            >
+              {{ tag.name }}
+            </el-tag>
+            <!-- <ul>
               <li
                 class="tags"
                 @click="handleSelectTag(item.path)"
@@ -67,7 +76,7 @@
                 v-for="(item, index) in tagsView"
                 :key="item"
               >
-                {{ item.title }}
+                {{ item.name }}
                 <span @click.stop="handleCloseTag(index)">
                   <svg-icon
                     v-if="!($route.path === item.path)"
@@ -75,7 +84,7 @@
                   ></svg-icon>
                 </span>
               </li>
-            </ul>
+            </ul> -->
           </div>
         </el-header>
         <el-main> <router-view /> </el-main>
@@ -86,34 +95,32 @@
 
 <script setup>
 import APIuser from '../api/user'
-import { useStore } from 'vuex'
-import { computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-const store = useStore()
-const route = useRoute()
-watch(
-  () => router.currentRoute.value.path,
-  (toPath) => {
-    const obj = {
-      title: route.meta.title,
-      path: route.path
-    }
-    store.commit('tagsview/setTagsView', obj)
-  },
-  { immediate: true, deep: true }
-)
+import { ref } from 'vue'
+// import { useStore } from 'vuex'
+// import { computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
-const tagsView = computed(() => {
-  return store.getters.tagsview
-})
+const tags = ref([
+  { name: 'Tag 1', type: '' },
+  { name: 'Tag 2', type: 'success' },
+  { name: 'Tag 3', type: 'info' },
+  { name: 'Tag 4', type: 'warning' },
+  { name: 'Tag 5', type: 'danger' }
+])
+// const store = useStore()
+// const route = useRoute()
 
-const handleSelectTag = (path) => {
-  router.push(path)
-}
+// const tagsView = computed(() => {
+//   return store.getters.tagsview
+// })
 
-const handleCloseTag = (index) => {
-  store.commit('tagsview/removeTagItem', index)
-}
+// const handleSelectTag = (path) => {
+//   router.push(path)
+// }
+
+// const handleCloseTag = (index) => {
+//   store.commit('tagsview/removeTagItem', index)
+// }
 APIuser.getleftmenu().then((res) => {
   console.log(res)
 })
@@ -138,36 +145,47 @@ const handleToHome = () => {
 const handleLogout = () => {
   router.push('/login')
 }
+// watch(
+//   () => router.currentRoute.value.path,
+//   (toPath) => {
+//     const obj = {
+//       title: route.meta.title,
+//       path: route.path
+//     }
+//     store.commit('tagsview/setTagsView', obj)
+//   },
+//   { immediate: true, deep: true }
+// )
 </script>
 
 <style lang="scss" scoped>
-.tags-view-container {
-  height: 34px;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%), 0 0 3px 0 rgb(0 0 0 / 4%);
+// .tags-view-container {
+//   height: 34px;
+//   width: 100%;
+//   background: #fff;
+//   border-bottom: 1px solid #d8dce5;
+//   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%), 0 0 3px 0 rgb(0 0 0 / 4%);
 
-  .tags {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    height: 26px;
-    line-height: 26px;
-    border: 1px solid #d8dce5;
-    color: #495060;
-    background: #fff;
-    padding: 0 8px;
-    font-size: 12px;
-    margin-left: 5px;
-    margin-top: 4px;
-  }
+//   .tags {
+//     display: inline-block;
+//     position: relative;
+//     cursor: pointer;
+//     height: 26px;
+//     line-height: 26px;
+//     border: 1px solid #d8dce5;
+//     color: #495060;
+//     background: #fff;
+//     padding: 0 8px;
+//     font-size: 12px;
+//     margin-left: 5px;
+//     margin-top: 4px;
+//   }
 
-  .tags.active {
-    background-color: rgb(48, 65, 86);
-    color: #fff;
-  }
-}
+//   .tags.active {
+//     background-color: rgb(48, 65, 86);
+//     color: #fff;
+//   }
+// }
 .el-header {
   width: 100%;
   height: 50px;
