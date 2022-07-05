@@ -40,17 +40,29 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
-const Login = ['/login']
+// const Login = ['/login']
+// router.beforeEach((to, from, next) => {
+//   // const newHeader = localStorage.getItem('token')
+//   if (localStorage.getItem('token')) {
+//     if (to.path === '/login') {
+//       next(from.path)
+//     } else {
+//       next()
+//     }
+//   } else {
+//     if (Login.includes(to.path)) {
+//       next()
+//     } else {
+//       next('/login')
+//     }
+//   }
+// })
 router.beforeEach((to, from, next) => {
-  const newHeader = localStorage.getItem('token')
-  if (newHeader) {
-    if (to.path === '/login') {
-      next(from.path)
-    } else {
-      next()
-    }
+  // 访问的路径在白名单
+  if (localStorage.getItem('gettoken')) {
+    next()
   } else {
-    if (Login.includes(to.path)) {
+    if (to.path === '/login') {
       next()
     } else {
       next('/login')

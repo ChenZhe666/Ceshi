@@ -80,11 +80,14 @@ const handleLoginSubmit = () => {
   Login.value.validate(async (valid) => {
     if (valid) {
       alert('成功!')
-      router.push('/')
       console.log(loginForm.value)
       const res = await APIuser.Login(loginForm.value)
+      console.log(res)
       console.log(res.headers.authorization)
       localStorage.setItem('gettoken', res.headers.authorization)
+      if (res.status === 200) {
+        router.push('/')
+      }
       console.log(res)
     } else {
       console.log('用户名或密码错误!!')

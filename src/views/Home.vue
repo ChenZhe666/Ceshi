@@ -38,7 +38,7 @@
       </el-aside>
       <el-container>
         <el-header>
-          <div>
+          <div class="deltel">
             <span>Vueadmin后台管理系统</span>
             <el-dropdown trigger="click" @command="handleCommand">
               <span class="el-dropdown-link">
@@ -143,6 +143,8 @@ const handleToHome = () => {
 }
 
 const handleLogout = () => {
+  console.log(11)
+  localStorage.removeItem('gettoken')
   router.push('/login')
 }
 // watch(
@@ -187,10 +189,12 @@ const handleLogout = () => {
 //   }
 // }
 .el-header {
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
+  .deltel {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 .text {
   display: inline-block;
