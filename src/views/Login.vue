@@ -70,9 +70,9 @@ const loginRules = ref({
 const img = ref('')
 APIuser.getcaptcha().then((res) => {
   console.log(res)
-  img.value = res.data.captchaImg
-  loginForm.value.token = res.data.token
-  localStorage.setItem('token', res.data.token)
+  img.value = res.data.data.captchaImg
+  loginForm.value.token = res.data.data.token
+  localStorage.setItem('token', res.data.data.token)
 })
 
 const router = useRouter()
@@ -83,6 +83,8 @@ const handleLoginSubmit = () => {
       router.push('/')
       console.log(loginForm.value)
       const res = await APIuser.Login(loginForm.value)
+      console.log(res.headers.authorization)
+      localStorage.setItem('gettoken', res.headers.authorization)
       console.log(res)
     } else {
       console.log('用户名或密码错误!!')

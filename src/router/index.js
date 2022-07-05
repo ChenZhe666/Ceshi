@@ -5,7 +5,29 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '/sys/dicts',
+        name: 'dicts',
+        component: () => import('../views/sys/dicts')
+      },
+      {
+        path: '/sys/menus',
+        name: 'menus',
+        component: () => import('../views/sys/menus')
+      },
+      {
+        path: '/sys/roles',
+        name: 'roles',
+        component: () => import('../views/sys/roles')
+      },
+      {
+        path: '/sys/users',
+        name: 'users',
+        component: () => import('../views/sys/users')
+      }
+    ]
   },
   {
     path: '/login',
@@ -18,20 +40,22 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
-
-// 访问的白名单, 可以直接通行
-// const whiteList = ['/login']
-// router.beforeEach((to, from, next) => {
-//   // 访问的路径在白名单
-//   if (localStorage.getItem('token')) {
-//     next()
-//   } else {
-//     if (to.path == '/login') {
-//       next()
-//     } else {
-//       next('/login')
-//     }
-//   }
-// })
+const Login = ['/login']
+router.beforeEach((to, from, next) => {
+  const newHeader = localStorage.getItem('token')
+  if (newHeader) {
+    if (to.path === '/login') {
+      next(from.path)
+    } else {
+      next()
+    }
+  } else {
+    if (Login.includes(to.path)) {
+      next()
+    } else {
+      next('/login')
+    }
+  }
+})
 
 export default router
