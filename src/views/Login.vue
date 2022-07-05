@@ -79,9 +79,6 @@ APIuser.getcaptcha().then((res) => {
 const router = useRouter()
 // const sss = ref([])
 const handleLoginSubmit = () => {
-  // if (loginForm.username == 'text' || loginForm.username == '1234567') {
-  //   return false
-  // }
   Loginform.value.validate(async (valid) => {
     if (valid) {
       alert('成功!')
