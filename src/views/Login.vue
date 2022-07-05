@@ -67,10 +67,14 @@ const loginRules = ref({
   ]
 })
 const img = ref('')
+// const token = ref('')
 // const yzm = ref('')
 APIuser.getcaptcha().then((res) => {
   console.log(res)
   img.value = res.data.captchaImg
+  // token.value = res.data.token
+
+  localStorage.setItem('token', res.data.token)
   // yzm.value = res.data.store.commit('rawValue', res)
 })
 
@@ -81,7 +85,7 @@ const router = useRouter()
 const handleLoginSubmit = () => {
   Loginform.value.validate(async (valid) => {
     if (valid) {
-      console.log(valid)
+      // console.log(valid)
       alert('成功!')
       await APIuser.Login(loginForm.value)
       router.push('/home')
