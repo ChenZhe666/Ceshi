@@ -35,11 +35,11 @@ service.interceptors.response.use(
   }
 )
 
-const request = (options) => {
-  if (options.method.toLowerCase() === 'get') {
-    options.params = options.data || {}
-  }
-  return service(options)
-}
+// const request = (options) => {
+//   if (options.method.toLowerCase() === 'get') {
+//     options.params = options.data || {}
+//   }
+//   return service(options)
+// }
 
-export default request
+export default service

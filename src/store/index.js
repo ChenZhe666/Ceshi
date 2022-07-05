@@ -1,16 +1,17 @@
 import { createStore } from 'vuex'
+import PersistedState from 'vuex-persistedstate'
 
 export default createStore({
   state: {
-    goods: []
+    token: localStorage.getItem('token') || ''
   },
+  getters: {},
   mutations: {
-    rawValue(state, list) {
-      state.goods = list
+    rawValue(state, token) {
+      state.token = token
     }
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {},
+  plugins: [PersistedState()]
 })

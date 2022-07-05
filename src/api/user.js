@@ -4,10 +4,23 @@ import request from '../utiles/request'
  * @param {*} data
  * @returns
  */
+// const Login = (data) => {
+//   return request({
+//     url: `/login?username=${data.username}&password=${data.password}&code=${data.code}&token=${data.token}`,
+//     method: 'POST',
+//     data
+//   })
+// }
 const Login = (data) => {
-  return request({ url: '/login', method: 'POST', data })
+  console.log(data, 'data')
+  return request.post(
+    `/login?username=${data.username}&password=${data.password}&code=${data.code}&token=${data.token}`
+  )
 }
 const getcaptcha = (data) => {
   return request({ url: '/captcha', method: 'GET', data })
 }
-export default { Login, getcaptcha }
+const getleftmenu = () => {
+  return request({ url: '/sys/menu/nav', method: 'GET' })
+}
+export default { Login, getcaptcha, getleftmenu }

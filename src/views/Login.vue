@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form
       class="login-form"
-      ref="Loginform"
+      ref="Login"
       :model="loginForm"
       :rules="loginRules"
     >
@@ -14,8 +14,8 @@
         密码:<el-input v-model="loginForm.password" />
       </el-form-item>
 
-      <el-form-item prop="yzm">
-        验证码:<el-input v-model="loginForm.yzm" />
+      <el-form-item prop="code">
+        验证码:<el-input v-model="loginForm.code" />
       </el-form-item>
     </el-form>
 
@@ -26,22 +26,22 @@
 
 <script setup>
 import { ref } from 'vue'
-// import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import APIuser from '../api/user'
 import { validatePassword } from './rules'
 
 // 数据源
 const loginForm = ref({
-  username: '',
-  password: '',
-  yzm: ''
+  username: 'test',
+  password: '1234567',
+  code: '',
+  token: ''
 })
 // const loginToken = ref({
 //   captchaImg: '',
 //   token: ''
 // })
-const Loginform = ref(null)
+const Login = ref(null)
 // 验证规则
 const loginRules = ref({
   username: [
@@ -58,7 +58,7 @@ const loginRules = ref({
       validator: validatePassword()
     }
   ],
-  yzm: [
+  code: [
     {
       required: true,
       trigger: 'blur',
@@ -66,31 +66,22 @@ const loginRules = ref({
     }
   ]
 })
+
 const img = ref('')
-// const token = ref('')
-// const yzm = ref('')
 APIuser.getcaptcha().then((res) => {
   console.log(res)
   img.value = res.data.captchaImg
-  // token.value = res.data.token
-
-  localStorage.setItem('token', res.data.token)
-  // yzm.value = res.data.store.commit('rawValue', res)
+  loginForm.value.token = res.data.token
 })
 
-// console.log(res.data.captchaImg)
-// const store = useStore()
 const router = useRouter()
-// const sss = ref([])
 const handleLoginSubmit = () => {
-  Loginform.value.validate(async (valid) => {
+  Login.value.validate(async (valid) => {
     if (valid) {
-      // console.log(valid)
       alert('成功!')
+      router.push('/')
+      console.log(loginForm.value)
       await APIuser.Login(loginForm.value)
-      router.push('/home')
-      // sss.value =  await APIuser.getcaptcha(loginToken.value)
-      // console.log(sss._rawValue.data);
     } else {
       console.log('用户名或密码错误!!')
       return false

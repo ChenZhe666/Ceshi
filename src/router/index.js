@@ -19,4 +19,19 @@ const router = createRouter({
   routes
 })
 
+// 访问的白名单, 可以直接通行
+// const whiteList = ['/login']
+// router.beforeEach((to, from, next) => {
+//   // 访问的路径在白名单
+//   if (localStorage.getItem('token')) {
+//     next()
+//   } else {
+//     if (to.path == '/login') {
+//       next()
+//     } else {
+//       next('/login')
+//     }
+//   }
+// })
+
 export default router
