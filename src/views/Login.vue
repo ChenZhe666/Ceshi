@@ -81,6 +81,7 @@ const router = useRouter()
 const handleLoginSubmit = () => {
   Loginform.value.validate(async (valid) => {
     if (valid) {
+      console.log(valid)
       alert('成功!')
       await APIuser.Login(loginForm.value)
       router.push('/home')
