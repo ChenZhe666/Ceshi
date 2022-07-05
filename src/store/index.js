@@ -1,17 +1,20 @@
 import { createStore } from 'vuex'
 import PersistedState from 'vuex-persistedstate'
-
+import tagsview from './modules/tagsview'
+import getters from './getter'
 export default createStore({
   state: {
     token: localStorage.getItem('token') || ''
   },
-  getters: {},
+  getters,
   mutations: {
     rawValue(state, token) {
       state.token = token
     }
   },
   actions: {},
-  modules: {},
+  modules: {
+    tagsview
+  },
   plugins: [PersistedState()]
 })

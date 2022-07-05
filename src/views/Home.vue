@@ -38,25 +38,47 @@
       </el-aside>
       <el-container>
         <el-header>
-          <span>Vueadmin后台管理系统</span>
-          <el-dropdown trigger="click" @command="handleCommand">
-            <span class="el-dropdown-link">
-              <!-- <el-avatar shape="square" :size="40" :src="avatarUrl" /> -->
-              <span class="text">text</span>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="home">首页</el-dropdown-item>
-                <el-dropdown-item command="profile">课程主页</el-dropdown-item>
-                <el-dropdown-item command="logout" divided
-                  >退出登录</el-dropdown-item
-                >
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-
+          <div>
+            <span>Vueadmin后台管理系统</span>
+            <el-dropdown trigger="click" @command="handleCommand">
+              <span class="el-dropdown-link">
+                <!-- <el-avatar shape="square" :size="40" :src="avatarUrl" /> -->
+                <span class="text">text</span>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="home">首页</el-dropdown-item>
+                  <el-dropdown-item command="profile"
+                    >课程主页</el-dropdown-item
+                  >
+                  <el-dropdown-item command="logout" divided
+                    >退出登录</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+          <div class="tags-view-container">
+            <ul>
+              <li
+                class="tags"
+                @click="handleSelectTag(item.path)"
+                :class="{ active: $route.path === item.path }"
+                v-for="(item, index) in tagsView"
+                :key="item"
+              >
+                {{ item.title }}
+                <span @click.stop="handleCloseTag(index)">
+                  <svg-icon
+                    v-if="!($route.path === item.path)"
+                    icon="close"
+                  ></svg-icon>
+                </span>
+              </li>
+            </ul>
+          </div>
         </el-header>
-        <el-main>  <router-view/> </el-main>
+        <el-main> <router-view /> </el-main>
       </el-container>
     </el-container>
   </div>
@@ -64,7 +86,34 @@
 
 <script setup>
 import APIuser from '../api/user'
-import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+const store = useStore()
+const route = useRoute()
+watch(
+  () => router.currentRoute.value.path,
+  (toPath) => {
+    const obj = {
+      title: route.meta.title,
+      path: route.path
+    }
+    store.commit('tagsview/setTagsView', obj)
+  },
+  { immediate: true, deep: true }
+)
+
+const tagsView = computed(() => {
+  return store.getters.tagsview
+})
+
+const handleSelectTag = (path) => {
+  router.push(path)
+}
+
+const handleCloseTag = (index) => {
+  store.commit('tagsview/removeTagItem', index)
+}
 APIuser.getleftmenu().then((res) => {
   console.log(res)
 })
@@ -92,6 +141,33 @@ const handleLogout = () => {
 </script>
 
 <style lang="scss" scoped>
+.tags-view-container {
+  height: 34px;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #d8dce5;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%), 0 0 3px 0 rgb(0 0 0 / 4%);
+
+  .tags {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #d8dce5;
+    color: #495060;
+    background: #fff;
+    padding: 0 8px;
+    font-size: 12px;
+    margin-left: 5px;
+    margin-top: 4px;
+  }
+
+  .tags.active {
+    background-color: rgb(48, 65, 86);
+    color: #fff;
+  }
+}
 .el-header {
   width: 100%;
   height: 50px;
