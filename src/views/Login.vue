@@ -72,6 +72,7 @@ APIuser.getcaptcha().then((res) => {
   console.log(res)
   img.value = res.data.captchaImg
   loginForm.value.token = res.data.token
+  localStorage.setItem('token', res.data.token)
 })
 
 const router = useRouter()
@@ -81,7 +82,8 @@ const handleLoginSubmit = () => {
       alert('成功!')
       router.push('/')
       console.log(loginForm.value)
-      await APIuser.Login(loginForm.value)
+      const res = await APIuser.Login(loginForm.value)
+      console.log(res)
     } else {
       console.log('用户名或密码错误!!')
       return false
